@@ -1,0 +1,22 @@
+CXX=c++
+CC=cc
+INCLUDEFLAGS=-I/opt/include
+LIBDIR=-L/opt/lib
+CXXFLAGS=-O2 -Wall -W -ansi -pedantic -I. $(INCLUDEFLAGS)
+CFLAGS=-O2 -Wall -W -ansi -pedantic -I. $(INCLUDEFLAGS)
+
+BOOST_IO=-lboost_iostreams
+LIBSEQ=-lsequence
+GSL=-lgsl -lgslcblas -lm
+
+TARGETS=diploid_disease2 ms_to_case_control cskss_permute cskss_gwas_permute
+
+all: diploid_disease2.o isbinary.o ms_to_case_control.o cskss_gwas_permute.o cskss_permute.o fexact.o
+	$(CXX) $(CXXFLAGS) $(BOOST_IO) $(LIBSEQ) $(GSL) $(LIBDIR) -o diploid_disease2 diploid_disease2.o isbinary.o
+	$(CXX) $(CXXFLAGS) $(BOOST_IO) $(LIBSEQ) $(GSL) $(LIBDIR) -o ms_to_case_control ms_to_case_control.o isbinary.o
+	$(CXX) $(CXXFLAGS) $(BOOST_IO) $(GSL) $(LIBDIR) -o cskss_permute cskss_permute.o fexact.o isbinary.o
+	$(CXX) $(CXXFLAGS) $(BOOST_IO) $(GSL) $(LIBDIR) -o cskss_gwas_permute cskss_permute.o fexact.o isbinary.o
+
+clean:
+	rm -f *.o
+	rm -f $(TARGETS)
